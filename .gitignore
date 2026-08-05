@@ -1,0 +1,4 @@
+selfinterp/
+__pycache__/
+*.pyc
+scope.md
