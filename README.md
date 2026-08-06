@@ -11,9 +11,11 @@ This project checks whether GPT-2 keeps track of a simple grammatical fact — w
 
 ## What we found
 
-`plots/probe_accuracy_ood.png` shows the classifier's accuracy at each layer, on both familiar sentences and ones with new words.
+`plots/probe_accuracy_ood.png` shows the classifier's accuracy at each layer. It reaches 100% accuracy on familiar sentences as early as layer 0, and 100% on sentences with completely new subject words by layer 10 — so the singular/plural information isn't just memorised vocabulary, it's genuinely and robustly readable from the model's activations, on words it never trained on.
 
-The adapter answers correctly about two-thirds of the time on sentences similar to what it trained on, but drops close to chance (about half right) on sentences with new words. That suggests it partly memorised specific words from training rather than learning the general rule — a real limitation, and a good next step would be training it on a bigger, more varied set of sentences.
+The adapter tells a different story: it answers correctly about two-thirds of the time on sentences similar to what it trained on, but drops close to chance (about half right) on sentences with new words. Checking the model's raw answers confirms it's giving real answers ("singular" or "plural"), just often the wrong one on new words, not garbled output. So the information the probe reads out so easily is sitting right there in the model, but the model's own self-report didn't learn to use it — it partly memorised training words instead of learning the general rule. That gap, not the raw accuracy numbers, is the interesting result.
+
+One caveat worth naming: singular vs plural is almost visible on the surface of the subject word itself (`cat` vs `cats`), so a linear classifier doing very well here is somewhat expected — it may be picking up a simple surface cue rather than deep syntax. A natural next step is testing a property that needs real sentence structure to get right, not just a visible "-s".
 
 ## Running it
 

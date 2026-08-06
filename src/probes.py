@@ -58,4 +58,9 @@ plt.xlabel('layer')
 plt.ylabel('probe accuracy')
 plt.savefig('plots/probe_accuracy_ood.png', dpi=150, bbox_inches='tight')
 
+best_in_dist_layer = int(np.argmax(accs))
+best_ood_layer = int(np.argmax(ood_accs))
+print(f"best in-dist accuracy: {accs[best_in_dist_layer]:.3f} at layer {best_in_dist_layer}")
+print(f"best ood accuracy: {ood_accs[best_ood_layer]:.3f} at layer {best_ood_layer}")
+
 

@@ -99,3 +99,12 @@ ood_acc = evaluate(model, ood_texts, ood_labels)
 
 print("in-dist accuracy:", in_dist_acc)
 print("ood accuracy:", ood_acc)
+
+print("\nsample OOD generations:")
+for text, label in list(zip(ood_texts, ood_labels))[:8]:
+    prompt = f"{text}\nIs the subject singular or plural? Answer:"
+    tokens = tokenizer(prompt, return_tensors="pt").to('cuda')
+    with torch.no_grad():
+        output = model.generate(**tokens, max_new_tokens=3, pad_token_id=tokenizer.pad_token_id)
+    gen = tokenizer.decode(output[0][tokens.input_ids.shape[1]:], skip_special_tokens=True)
+    print(f"  {text}  true={label}  gen={gen!r}")
